@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase'
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutUserStart, signoutUserSuccess, signoutFailure } from '../redux/user/userSlice.js'
-import { useDispatch } from 'react-redux'
 
 export default function Profile() {
   const fileRef = useRef(null)
@@ -113,7 +112,7 @@ export default function Profile() {
           <input type="email" onChange={handleChange} defaultValue={currentUser.email} placeholder='Email' id='email' className='border p-3 rounded-full' />
           <input type="password" placeholder='Password' id='password' className='border p-3 rounded-full' />
           <button disabled={loading} className='bg-purple-800 text-white rounded-full p-3 uppercase hover:opacity-95 disabled:opacity-80'>{loading ? 'Loading...' : 'update'}</button>
-
+          <Link className='bg-rose-700 text-white p-3 rounded-full uppercase text-center hover:opacity-05' to={'/create-listing'}>create listing</Link>
         </form>
         <div className="flex justify-between mt-5">
           <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete account</span>
