@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { Navigation } from 'swiper/modules'
@@ -13,14 +14,17 @@ import {
     FaParking,
     FaShare,
 } from 'react-icons/fa';
+import Contact from '../components/Contact.jsx'
 
 export default function Listing() {
     SwiperCore.use([Navigation])
     const params = useParams()
+    const { currentUser } = useSelector((state) => state.user)
     const [listing, setListing] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, seterror] = useState(false)
     const [copied, setCopied] = useState(false);
+    const [contact, setContact] = useState(false)
     useEffect(() => {
         const fetchListing = async () => {
             try {
@@ -90,7 +94,7 @@ export default function Listing() {
                                 {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
                             </p>
                             {listing.offer && (
-                                <p className='bg-green-800 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
+                                <p className='bg-gray-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
                                     ${+listing.regularPrice - +listing.discountPrice} off
                                 </p>
                             )}
@@ -121,6 +125,13 @@ export default function Listing() {
                                 {listing.furnished ? 'Furnished' : 'Unfurnished'}
                             </li>
                         </ul>
+                        {currentUser && listing.userRef !== currentUser._id && !contact &&
+
+                            <button onClick={() => setContact(true)} className='p-3 bg-purple-700 text-white rounded-full uppercase hover:opacity-95 disabled:opacity-80'>
+                                Contact landlord
+                            </button>
+                        }
+                        {contact && <Contact listing={listing} />}
                     </div>
                 </div>)
             }
